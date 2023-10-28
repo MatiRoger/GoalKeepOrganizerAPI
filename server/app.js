@@ -15,5 +15,8 @@ app.listen(port,()=>{
     console.log(`Escuchando puerto: ${port}`);
 })
 
+//declaracion de rutas
+app.use("/reservas", reservasRoutes);
+
 
 connection()
