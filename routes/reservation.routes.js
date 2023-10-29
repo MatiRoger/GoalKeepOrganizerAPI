@@ -1,7 +1,11 @@
 const express = require ('express');
+const { createReservation, getReservations, cancelReservation } = require('../controllers/reservation.controller');
+
 
 const route= express();
 
 route.post('/',createReservation)
-route.get('/',getAllReservations)
-route.get('/:userId',getReservationByUserId)
+route.get('/',getReservations)
+route.delete('/', cancelReservation)
+
+module.exports = route;
