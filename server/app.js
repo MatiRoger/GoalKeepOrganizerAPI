@@ -1,7 +1,9 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
-const connection = require('../db/connection')
+const connection = require('../db/connection');
+const reservationRoutes = require('../routes/reservation.routes');
+
 const app = express();
 
 dotenv.config();
@@ -16,7 +18,7 @@ app.listen(port,()=>{
 })
 
 //declaracion de rutas
-app.use("/reservas", reservasRoutes);
+app.use("/reservas", reservationRoutes);
 
 
-connection()
+connection();
