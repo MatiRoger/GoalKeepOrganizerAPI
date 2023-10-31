@@ -1,5 +1,5 @@
 const express = require('express');
-const { createFootballField, getFootballFields } = require('../controllers/footballField.controller');
+const { createFootballField, getFootballFields, deleteFootballField } = require('../controllers/footballField.controller');
 
 const route = express();
 

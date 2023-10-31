@@ -1,4 +1,4 @@
-const { createFootballFieldService, getFootballFieldService } = require('../services/footballField.services')
+const { createFootballFieldService, getFootballFieldService, deleteFootballFieldService } = require('../services/footballField.services')
 
 
 const createFootballField = async(req,res)=>{
@@ -13,12 +13,23 @@ const createFootballField = async(req,res)=>{
 const getFootballFields = async (req,res)=>{
   try {
     const footballFields = await getFootballFieldService(req.body);
+    res.status(200).json({ footballFields });
   } catch (error) {
     res.status(500).json({ error })
   }
 }
 
+const deleteFootballField =  async (req,res)=>{
+  try {
+    await deleteFootballFieldService(req.body);
+    res.status(200).json({ message: 'Cancha borrada exitosamente' });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+}
+
 module.exports = {
   createFootballField,
-  getFootballFields
+  getFootballFields,
+  deleteFootballField
 }
