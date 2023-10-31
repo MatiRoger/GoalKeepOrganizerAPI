@@ -16,4 +16,4 @@ const footballFieldSchema = new Schema({
   }
 });
 
-module.exports = new model('FootballField',footballFieldSchema);
+module.exports = model('FootballField',footballFieldSchema);
