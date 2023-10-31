@@ -27,9 +27,9 @@ return searchResult;
 }
 
 const deleteReservationService = async ({ reservationId })=> {
-  const reservation = Reservation.find({ _id: reservationId});
+  const reservation = await Reservation.find({ _id: reservationId});
   if(!reservation) throw new Error('La reservacion no existe.');
-  if(reservation.date < (Date.now()-86400000)) throw new Error ('La cancelacion debe ser realizada con al menos 24hs de antelacion');
+  if(reservation.date < (Date.now()-7200000)) throw new Error ('La cancelacion debe ser realizada con al menos 2hs de antelacion');
   
   await Reservation.findByIdAndDelete(reservationId);
 
