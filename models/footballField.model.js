@@ -13,6 +13,9 @@ const footballFieldSchema = new Schema({
   players: {
     type: String,
     required: true
+  },
+  imgUrl:{
+    type: String
   }
 });
 
