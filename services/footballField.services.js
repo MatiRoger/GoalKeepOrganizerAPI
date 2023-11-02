@@ -1,7 +1,7 @@
 const FootballField = require('../models/footballField.model');
 
-const createFootballFieldService = async({ name, grassType, players })=>{
-  const newFootballField = new FootballField({ name,grassType,players });
+const createFootballFieldService = async({ name, grassType, players, imgUrl })=>{
+  const newFootballField = new FootballField({ name, grassType, players, imgUrl });
   
   if(!newFootballField)throw new Error ('Hubo un error al crear una nueva cancha');
   
