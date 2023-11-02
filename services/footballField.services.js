@@ -23,9 +23,10 @@ const getFootballFieldService = async({ name, grassType, players })=>{
 };
 
 const deleteFootballFieldService = async({footballFieldId})=>{
-  const footballField = await FootballField.find({_id: footballFieldId});
-  if(!footballField) throw new Error('No se encontro la cancha deseada');
+  const footballField = await FootballField.findById(footballFieldId);
   
+  if(!footballField) throw new Error('No se encontro la cancha que desea eliminar');
+
   await FootballField.findByIdAndDelete(footballFieldId);
 }
 
