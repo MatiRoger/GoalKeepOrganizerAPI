@@ -16,13 +16,17 @@ const productSchema = new Schema({
     },
     available:{
         type: Boolean,
-        require: true,
+        required: true,
     },
-    // productCategory:{
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'productCategory',
-    //     required: true
-    // }
+    url:{
+        type: String,
+        required: true
+    },
+    productCategory:{
+        type: Schema.Types.ObjectId,
+        ref: 'productCategory',
+        required: true
+    }
 });
 
 module.exports = model('Products', productSchema)
