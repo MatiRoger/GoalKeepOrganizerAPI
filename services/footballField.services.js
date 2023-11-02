@@ -31,11 +31,12 @@ const deleteFootballFieldService = async({footballFieldId})=>{
   await FootballField.findByIdAndDelete(footballFieldId);
 };
 
-const updateFootballFieldService = async ({footballFieldId, newName, newGrassType, newPlayers})=>{
+const updateFootballFieldService = async ({footballFieldId, newName, newGrassType, newPlayers, newImgUrl})=>{
   let query = {};
   if(newName) query.name = newName;
   if(newGrassType) query.grassType = newGrassType;
   if(newPlayers) query.players = newPlayers;
+  if(newImgUrl) query.imgUrl = newImgUrl;
 
   const footballField = FootballField.findById(footballFieldId);
   if(!footballField) throw new Error ('La cancha que desea actualizar no existe');
