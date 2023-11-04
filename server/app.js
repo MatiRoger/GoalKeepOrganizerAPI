@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cors = require('cors')
 const connection = require('../db/connection')
+
+const footballFieldsRoutes = require('../routes/footballField.routes')
 const app = express();
 
 dotenv.config();
@@ -18,4 +20,6 @@ app.listen(port,()=>{
 })
 
 
-connection()
+
+app.use('/footballfields', footballFieldsRoutes);
+connection();
