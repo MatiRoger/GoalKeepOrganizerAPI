@@ -27,11 +27,6 @@ const productSchema = new Schema({
         type: Boolean,
         required: true,
     },
-    url:{
-        type: String,
-        required: true,
-        unique: true
-    },
     productCategory:{
         type: Schema.Types.ObjectId,
         ref: 'productCategory',

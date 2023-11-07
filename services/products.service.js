@@ -1,7 +1,7 @@
 const Products = require('../models/product.model');
 const productCategoryModel = require('../models/productCategory.model');
 
-const createProduct = async ({name, description, brand, Image, price, available, url, productCategory}) => {
+const createProduct = async ({name, description, brand, Image, price, available, productCategory}) => {
         const product = new Products({
             name,
             description,
@@ -9,7 +9,6 @@ const createProduct = async ({name, description, brand, Image, price, available,
             Image,
             price,
             available,
-            url,
             productCategory
     });
     
