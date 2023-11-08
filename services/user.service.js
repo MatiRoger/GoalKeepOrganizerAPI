@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const createUser = async ({ name, lastName, userName, password, email, admin, active }) => {
 
@@ -54,6 +55,8 @@ const login = async ({ userName, email, password }) => {
 
     const passwordCompare = await bcrypt.compare(password, userFounded.password);
 
+    if (!passwordCompare) throw new Error('Las credenciales son incorrectas');
+
     const userPasswordHidden = userFounded._doc;
     delete userPasswordHidden.password;
 
@@ -64,6 +67,8 @@ const login = async ({ userName, email, password }) => {
     const token = jwt.sign(payload, SECRET, {
         expiresIn: '3h',
     });
+
+    return{ token, userPasswordHidden };
 };
 
 
