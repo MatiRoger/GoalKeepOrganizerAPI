@@ -40,7 +40,37 @@ const getAllUser = async ({ id, name }) => {
     return users
 };
 
+const login = async ({ userName, email, password }) => {
+    const SECRET = process.env.SECRET_KEY;
+    let userFounded;
+
+    if(userName){
+        userFounded = await User.findOne({ userName });
+    }else if(email){
+        userFounded = await User.findOne({ email })
+    }
+    
+    if(!userFounded) throw new Error('Las credenciales no son validas');
+
+    const passwordCompare = await bcrypt.compare(password, userFounded.password);
+
+    const userPasswordHidden = userFounded._doc;
+    delete userPasswordHidden.password;
+
+    const payload = {
+        userPasswordHidden       
+    };
+
+    const token = jwt.sign(payload, SECRET, {
+        expiresIn: '3h',
+    });
+};
+
+
+
+
 module.exports = {
     createUser,
-    getAllUser
+    getAllUser,
+    login
 }
