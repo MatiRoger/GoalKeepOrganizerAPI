@@ -12,7 +12,7 @@ const createFootballField = async(req,res)=>{
 
 const getFootballFields = async (req,res)=>{
   try {
-    const footballFields = await getFootballFieldService(req.body);
+    const footballFields = await getFootballFieldService(req.query);
     res.status(200).json({ footballFields });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -21,7 +21,7 @@ const getFootballFields = async (req,res)=>{
 
 const deleteFootballField =  async (req,res)=>{
   try {
-    await deleteFootballFieldService(req.body);
+    await deleteFootballFieldService(req.query);
     res.status(200).json({ message: 'Cancha borrada exitosamente' });
   } catch (error) {
     res.status(500).json({ error: error.message });
