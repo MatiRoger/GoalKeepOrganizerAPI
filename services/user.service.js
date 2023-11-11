@@ -11,7 +11,7 @@ const encryptPassword = async (password) => {
 
 
 const validateName = (name) => {
-    const nameRegex = /^[a-zA-Z\s']+$/;
+    const nameRegex = /^[a-zA-Z\s']{2,30}$/;
     return nameRegex.test(name);
 }
 
@@ -33,7 +33,7 @@ const createUser = async ({ name, lastName, userName, password, email, admin, ac
     }
 
     if(!validatePassword(password)){
-        throw new Error('El formato de la contraseña no es valido');
+        throw new Error('Contraseña no es valida (deber tener al menos: un minimo de 8 caracteres, una mayuscula, una minuscula, un numero y un simbolo especial)');
     }
 
     if (!emailRegex.test(email)) {
@@ -45,7 +45,7 @@ const createUser = async ({ name, lastName, userName, password, email, admin, ac
         lastName,
         userName,
         password: passwordHashed,
-        email: emailValidation, 
+        email, 
         admin,
         active
     });
@@ -90,7 +90,7 @@ const login = async ({ userName, email, password }) => {
 
     const passwordCompare = await bcrypt.compare(password, userFounded.password);
 
-    if (!passwordCompare) throw new Error('Las credenciales son incorrectas');
+    if (!passwordCompare) throw new Error('Las credenciales no son validas');
 
     const userPasswordHidden = userFounded._doc;
     delete userPasswordHidden.password;
