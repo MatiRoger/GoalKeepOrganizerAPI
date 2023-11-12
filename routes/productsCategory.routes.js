@@ -1,7 +1,8 @@
 const express = require('express');
 const routes = express();
-const { createProductCategory } = require('../controllers/productCategory.controller');
+const { createProductCategory, getAllCategories } = require('../controllers/productCategory.controller');
 
 routes.post('/', createProductCategory);
+routes.get('/', getAllCategories)
 
 module.exports = routes;

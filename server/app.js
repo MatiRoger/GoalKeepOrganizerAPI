@@ -18,8 +18,6 @@ app.use(cors());
 
 const port = process.env.PORT;
 
-app.use('/products', products);
-app.use('/productCategory', productCategory);
 
 app.listen(port,()=>{
     console.log(`Escuchando puerto: ${port}`);
@@ -27,5 +25,7 @@ app.listen(port,()=>{
 
 
 
+app.use('/products', products);
+app.use('/productCategory', productCategory);
 app.use('/footballfields', footballFieldsRoutes);
 connection();
