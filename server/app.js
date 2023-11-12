@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cors = require('cors')
 const connection = require('../db/connection')
+
+const footballFieldsRoutes = require('../routes/footballField.routes')
 const app = express();
 
 const user = require('../routes/user.routes')
@@ -17,13 +19,14 @@ app.use(cors());
 
 const port = process.env.PORT;
 
-app.use('/user', user);
-app.use('/products', products);
-app.use('/productCategory', productCategory);
+
 
 app.listen(port,()=>{
     console.log(`Escuchando puerto: ${port}`);
 })
 
-
-connection()
+app.use('/user', user);
+app.use('/products', products);
+app.use('/productCategory', productCategory);
+app.use('/footballfields', footballFieldsRoutes);
+connection();
