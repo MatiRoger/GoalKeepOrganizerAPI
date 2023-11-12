@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const cors = require('cors')
 const connection = require('../db/connection')
 
+const galleryCarruselRoutes = require('../routes/carrusel.routes')
+const galleryCardRoutes = require('../routes/card.routes')
 const footballFieldsRoutes = require('../routes/footballField.routes')
 const app = express();
 
@@ -20,6 +22,7 @@ app.listen(port,()=>{
 })
 
 
-
+app.use('/gallerycard', galleryCardRoutes);
+app.use('/gallerycarrusel', galleryCarruselRoutes)
 app.use('/footballfields', footballFieldsRoutes);
 connection();
