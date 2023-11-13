@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const encryptPassword = async (password) => {
     const SALT_ROUNDS = 10;
-    const hashedPassword = await bcrypt.hash( password, SALT_ROUNDS );
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     return hashedPassword;
 }
 
@@ -25,14 +25,14 @@ const validatePassword = (password) => {
 
 const createUser = async ({ name, lastName, userName, password, email, admin, active }) => {
 
-    const passwordHashed = await encryptPassword(password);    
+    const passwordHashed = await encryptPassword(password);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!validateName(name) || !validateName(lastName)) {
         throw new Error('Nombre o apellido no válido');
     }
 
-    if(!validatePassword(password)){
+    if (!validatePassword(password)) {
         throw new Error('Contraseña no es valida (deber tener al menos: un minimo de 8 caracteres, una mayuscula, una minuscula, un numero y un simbolo especial)');
     }
 
@@ -45,14 +45,14 @@ const createUser = async ({ name, lastName, userName, password, email, admin, ac
         lastName,
         userName,
         password: passwordHashed,
-        email, 
+        email,
         admin,
         active
     });
 
     await user.save();
 
-    if(!user) throw new Error('Error al crear un nuevo usuario')
+    if (!user) throw new Error('Error al crear un nuevo usuario')
     return user;
 };
 
@@ -61,17 +61,17 @@ const getAllUser = async ({ id, name }) => {
 
     let query = {};
 
-    if(id){
+    if (id) {
         query._id = id;
     }
 
     if (name) {
-        query.name =  { $regex: '.*' + name + '.*', $options: 'i' };
+        query.name = { $regex: '.*' + name + '.*', $options: 'i' };
     }
 
     const users = await User.find(query);
 
-    if(!users) throw new Error('Error al traer todos los usuarios')
+    if (!users) throw new Error('Error al traer todos los usuarios')
     return users
 };
 
@@ -80,13 +80,13 @@ const login = async ({ userName, email, password }) => {
     const SECRET = process.env.SECRET_KEY;
     let userFounded;
 
-    if(userName){
+    if (userName) {
         userFounded = await User.findOne({ userName });
-    }else if(email){
+    } else if (email) {
         userFounded = await User.findOne({ email })
     }
-    
-    if(!userFounded) throw new Error('Las credenciales no son validas');
+
+    if (!userFounded) throw new Error('Las credenciales no son validas');
 
     const passwordCompare = await bcrypt.compare(password, userFounded.password);
 
@@ -96,59 +96,49 @@ const login = async ({ userName, email, password }) => {
     delete userPasswordHidden.password;
 
     const payload = {
-        userPasswordHidden       
+        userPasswordHidden
     };
 
     const token = jwt.sign(payload, SECRET, {
         expiresIn: '3h',
     });
 
-    return{ token, userPasswordHidden };
+    return { token, userPasswordHidden };
 };
 
 
 const deleteUsersService = async ({ id }) => {
 
     const deleteUser = await User.findByIdAndDelete(id);
-    if(!deleteUser) throw new Error('No se pudo eliminar el usuario')
+    if (!deleteUser) throw new Error('No se pudo eliminar el usuario')
     return deleteUser
 
 };
 
 
-const updateUsersService = async ({ id, ...updates }) => {
+const updateUsersService = async ( id, userUpdate ) => {
 
-    const validFields = ['name', 'lastName', 'userName', 'password']; 
-
-    if (('name' in updates && !validateName(updates.name)) || ('lastName' in updates && !validateName(updates.lastName))) {
-        throw new Error('Nombre o apellido no válido');
+    if (userUpdate.password && !validatePassword(userUpdate.password)) {
+        throw new Error('Contraseña no es valida (deber tener al menos: un minimo de 8 caracteres, una mayuscula, una minuscula, un numero y un simbolo especial)');
     }
 
-    if('password' in updates && !validatePassword(updates.password)){
-        throw new Error('La contraseña no es valida');
+    if (userUpdate.name && !validateName(userUpdate.name)) {
+        throw new Error('Nombre no válido');
     }
 
-    //some: verifica si al menos un valor cumple
-    //Object.keys: devuelve un array de las keys
-    if (!validFields.some(field => Object.keys(updates).includes(field))) {
-        throw new Error('Se requiere al menos un campo válido para la actualización');
+    if (userUpdate.lastName && !validateName(userUpdate.lastName)) {
+        throw new Error('Apellido no válido');
     }
 
-    // Obeject.entries() : crea un array de subarrays
-    // .filter(([key]) => validFields.includes(key)): Utiliza el método filter para crear un nuevo array que solo incluye los subarrays donde la clave (key) está presente en validFields. 
-    const filteredUpdates = Object.fromEntries(Object.entries(updates).filter(([key]) => validFields.includes(key)));
-
-    if (filteredUpdates.password) {
-        filteredUpdates.password = await encryptPassword(filteredUpdates.password);
+    if (userUpdate.password) {
+        userUpdate.password = await encryptPassword(userUpdate.password);
     }
 
-    const updatedUser = await User.findByIdAndUpdate(id, filteredUpdates, { new: true });
+    let userUpdates = await User.findByIdAndUpdate(id, userUpdate, { new: true });
+    console.log(userUpdate);
 
-    if (!updatedUser) {
-        throw new Error('Error al actualizar usuario');
-    }
-
-    return updatedUser;
+    if (!userUpdates) throw new Error('No se pudo encontrar el usuario para actualizar')
+    return userUpdates; 
 };
 
 
