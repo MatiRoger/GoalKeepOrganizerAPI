@@ -2,16 +2,15 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cors = require('cors')
-const connection = require('../db/connection')
-
+const connection = require('../db/connection');
+const reservationRoutes = require('../routes/reservation.routes');
 const galleryCarruselRoutes = require('../routes/carrusel.routes')
 const galleryCardRoutes = require('../routes/card.routes')
 const footballFieldsRoutes = require('../routes/footballField.routes')
-const app = express();
-
 const user = require('../routes/user.routes')
 const products = require('../routes/products.routes');
 const productCategory = require('../routes/productsCategory.routes');
+const app = express();
 
 dotenv.config();
 
@@ -26,6 +25,9 @@ const port = process.env.PORT;
 app.listen(port,()=>{
     console.log(`Escuchando puerto: ${port}`);
 })
+
+//declaracion de rutas
+app.use("/reservation", reservationRoutes);
 
 app.use('/gallerycard', galleryCardRoutes);
 app.use('/gallerycarrusel', galleryCarruselRoutes)
