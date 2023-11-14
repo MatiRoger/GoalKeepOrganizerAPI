@@ -1,10 +1,32 @@
 const Reservation = require('../models/reservation.model');
 
-const createReservationService = async({ user, date, footballField })=>{
+const isHourOverlap = (existingReservations, newReservation) => {
+
+
+  for (let existingReservation of existingReservations) {
+    const existingStartingHour = existingReservation.hour.start;
+    const existingEndingHour = existingReservation.hour.end;
+    const newStartingHour = newReservation.hour.start;
+    const newEndingHour = newReservation.hour.end;
+
+    if (
+      (newStartingHour >= existingStartingHour && newStartingHour < existingEndingHour) ||
+      (newEndingHour > existingStartingHour && newEndingHour <= existingEndingHour) ||
+      (newStartingHour <= existingStartingHour && newEndingHour >= existingEndingHour)
+    ) return true;
+  }
+  return false;
+}
+
+
+
+const createReservationService = async({ user, day, footballField, hour })=>{
     
-  const existingReservation = await Reservation.find({ date: date, footballField: footballField });
-  if(existingReservation) throw new Error('Esta cancha ya esta reservada en esa fecha y horario.');
-  const newReservation = new Reservation({ user,date,footballField });
+  const existingReservations = await Reservation.find({ day: day, footballField: footballField });
+  console.log(existingReservations);
+  const newReservation = new Reservation({ user,day,footballField, hour });
+  console.log(isHourOverlap(existingReservations, newReservation))
+  if(isHourOverlap(existingReservations,newReservation))throw new Error('Horario ocupado');
 
   if(!newReservation)throw new Error('Error al crear Reservacion');
 
@@ -12,10 +34,10 @@ const createReservationService = async({ user, date, footballField })=>{
   return newReservation;
 };
 
-const getReservationsService = async ({ user, date, footballField}) => {
+const getReservationsService = async ({ user, day, footballField}) => {
 let query = {};
 if(user) query.user = user;
-if(date) query.date = date;
+if(day) query.day = day;
 if (footballField) query.footballField=footballField;
 
 const searchResult = await Reservation.find(query);
@@ -28,11 +50,10 @@ return searchResult;
 
 const deleteReservationService = async ({ reservationId })=> {
   const reservation = await Reservation.find({ _id: reservationId});
+  
   if(!reservation) throw new Error('La reservacion no existe.');
-  if(reservation.date < (Date.now()-7200000)) throw new Error ('La cancelacion debe ser realizada con al menos 2hs de antelacion');
   
   await Reservation.findByIdAndDelete(reservationId);
-
 }
 
 module.exports = {

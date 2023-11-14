@@ -11,7 +11,7 @@ const createReservation = async (req, res) => {
 
 const getReservations = async (req,res)=>{
   try {
-    const reservations = await getReservationsService(req.body);
+    const reservations = await getReservationsService(req.query);
     res.status(200).json({ reservations });
   } catch (error) {
     res.status(500).json({ error })
@@ -20,7 +20,7 @@ const getReservations = async (req,res)=>{
 
 const cancelReservation = async (req,res)=>{
   try {
-    await deleteReservationService(req.body);
+    await deleteReservationService(req.query);
     res.status(200).json({ message: "Reservacion cancelada"});
   } catch (error) {
     res.status(500).json({ message: error })

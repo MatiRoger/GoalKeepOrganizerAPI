@@ -27,7 +27,7 @@ app.listen(port,()=>{
 })
 
 //declaracion de rutas
-app.use("/reservas", reservationRoutes);
+app.use("/reservation", reservationRoutes);
 
 app.use('/gallerycard', galleryCardRoutes);
 app.use('/gallerycarrusel', galleryCarruselRoutes)
