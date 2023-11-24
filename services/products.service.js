@@ -39,7 +39,7 @@ const getProducts = async ({id}) => {
     return getProduct
 }
 
-const getItems = async ({id, page, limit, name}) =>  {
+const getItems = async ({id, page, limit, name, productCategory}) =>  {
     let query = {}
 
     if(id){
@@ -48,6 +48,10 @@ const getItems = async ({id, page, limit, name}) =>  {
 
     if (name) {
         query.name =  { $regex: '.*' + name + '.*', $options: 'i' };
+    }
+
+    if(productCategory){
+        query.productCategory = productCategory;
     }
 
     const options = {

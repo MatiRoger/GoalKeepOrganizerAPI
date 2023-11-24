@@ -30,15 +30,20 @@ const createUser = async ({ name, lastName, userName, password, email, admin, ac
 
     if (!validateName(name) || !validateName(lastName)) {
         throw new Error('Nombre o apellido no válido');
-    }
+    };
+    
+    if (!userName) {
+        throw new Error('Se requiere ingresar un nombre de usuario');
+    };
 
     if (!validatePassword(password)) {
         throw new Error('Contraseña no es valida (deber tener al menos: un minimo de 8 caracteres, una mayuscula, una minuscula, un numero y un simbolo especial)');
-    }
+    };
 
     if (!emailRegex.test(email)) {
         throw new Error('El formato del correo electrónico no es válido');
-    }
+    };
+
 
     const user = new User({
         name,
