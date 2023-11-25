@@ -18,6 +18,9 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    confirmPassword: {
+        type: String,
+    },
     email: {
         type: String,
         required: true,
