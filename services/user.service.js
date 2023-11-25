@@ -23,7 +23,7 @@ const validatePassword = (password) => {
 };
 
 
-const createUser = async ({ name, lastName, userName, password, email, admin, active }) => {
+const createUser = async ({ name, lastName, userName, password, confirmPassword, email, admin, active }) => {
 
     const passwordHashed = await encryptPassword(password);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -38,6 +38,14 @@ const createUser = async ({ name, lastName, userName, password, email, admin, ac
 
     if (!validatePassword(password)) {
         throw new Error('Contraseña no es valida (deber tener al menos: un minimo de 8 caracteres, una mayuscula, una minuscula, un numero y un simbolo especial)');
+    };
+
+    if (!confirmPassword) {
+        throw new Error('Debe confirmar la contraseña');
+    };
+
+    if(password !== confirmPassword) {
+        throw new Error('Las contraseñas no coinciden');
     };
 
     if (!emailRegex.test(email)) {
