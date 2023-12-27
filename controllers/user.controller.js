@@ -5,7 +5,6 @@ const createUsers = async (req, res) => {
         const newUser = await createUser(req.body);
         res.status(200).json({ newUser });
     } catch (error) {
-        console.log(error);
         res.status(400).json({ error: error.message });
     }
 };
@@ -16,7 +15,6 @@ const getAllUsers = async (req, res) => {
         const allUsers = await getAllUser({ id, name });
         res.status(200).json({ allUsers });
     } catch (error) {
-        console.log(error);
         res.status(400).json({ error: error.message });
     }
 };
@@ -26,7 +24,6 @@ const loginService = async (req, res) => {
         const loginUser = await login(req.body);
         res.status(200).json({ loginUser });
     } catch (error) {
-        console.log(error);
         res.status(401).json({ error: error.message });
     }
 };
@@ -41,7 +38,6 @@ const deleteUsers = async (req, res) => {
             res.status(200).json({ msg: 'Usuario eliminado con éxito' });
         }
     } catch (error) {
-        console.log(error);
         res.status(400).json({ error: error.message });
     }
 };
@@ -52,7 +48,6 @@ const updateUsers = async (req, res) => {
         const updateUser = await updateUsersService( id, req.body );
         res.status(200).json({ updateUser });
     } catch (error) {
-        console.log(error);
         res.status(400).json({ error: error.message });
     }
 };
